@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">GitHubExplorer</string>
+    <string name="user_search_title">Search GitHub Users</string>
+    <string name="user_search_hint">Enter a username</string>
+    <string name="user_search_button">Search</string>
+    <string name="user_search_intro">Search for a GitHub user to explore their profile.</string>
+    <string name="user_search_empty">No users found. Try another name.</string>
+    <string name="user_search_blank">Please enter a username.</string>
+    <string name="user_search_loading">Searching users…</string>
+
+    <string name="user_profile_title">User Profile</string>
+    <string name="user_profile_loading">Loading profile…</string>
+    <string name="user_profile_no_bio">No bio available</string>
+    <string name="user_profile_no_location">Location not provided</string>
+    <string name="user_profile_repos">Public repositories: %1$d</string>
+    <string name="user_profile_followers">Followers: %1$d</string>
+    <string name="user_profile_following">Following: %1$d</string>
+    <string name="user_avatar_description">Avatar of %1$s</string>
+
+    <string name="user_open_browser">Open in Browser</string>
+    <string name="user_back">Back</string>
+    <string name="user_retry">Retry</string>
+    <string name="user_network_error">Cannot connect. Check your internet and try again.</string>
+    <string name="user_rate_limit_error">GitHub request limit reached. Please try again later.</string>
+    <string name="user_generic_error">Something went wrong. Please try again.</string>
+
+    <string name="user_repositories_title">Repositories</string>
+    <string name="user_repositories_loading">Loading repositories…</string>
+    <string name="user_repositories_empty">This user has no public repositories.</string>
+    <string name="user_repository_no_description">No description available</string>
+    <string name="user_repository_no_language">Language not specified</string>
+    <string name="user_repository_stars">Stars: %1$d</string>
+    <string name="user_repository_forks">Forks: %1$d</string>
+    <string name="user_repository_share">Share Repository</string>
+    <string name="user_repository_share_title">Share repository link</string>
+    <string name="user_repositories_load_more">Load More</string>
+    <string name="user_no_app_available">No app available to open this link.</string>
+</resources>
