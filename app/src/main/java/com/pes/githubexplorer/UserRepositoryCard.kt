@@ -1,3 +1,4 @@
+
 package com.pes.githubexplorer
 
 import android.content.ActivityNotFoundException
@@ -6,11 +7,13 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.pes.githubexplorer.favorites.FavoritesRepository
+import kotlinx.coroutines.launch
 
 @Composable
 fun UserRepositoryCard(
@@ -18,6 +21,16 @@ fun UserRepositoryCard(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+
+    // Connect to your Favorites storage
+    val favoritesRepository = remember {
+        FavoritesRepository(context)
+    }
+    val coroutineScope = rememberCoroutineScope()
+
+    val isFavorite by favoritesRepository
+        .observeIsFavorite(repository.id)
+        .collectAsState(initial = false)
 
     val shareTitle = stringResource(
         R.string.user_repository_share_title
@@ -30,6 +43,7 @@ fun UserRepositoryCard(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+
             Text(
                 text = repository.fullName,
                 style = MaterialTheme.typography.titleMedium
@@ -69,6 +83,33 @@ fun UserRepositoryCard(
                 )
             }
 
+            // ADD OR REMOVE FAVORITE
+            OutlinedButton(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    coroutineScope.launch {
+                        if (isFavorite) {
+                            favoritesRepository.removeFavorite(
+                                repository.id
+                            )
+                        } else {
+                            favoritesRepository.addFavorite(
+                                repository
+                            )
+                        }
+                    }
+                }
+            ) {
+                Text(
+                    if (isFavorite) {
+                        "♥ Remove from Favorites"
+                    } else {
+                        "♡ Add to Favorites"
+                    }
+                )
+            }
+
+            // OPEN GITHUB REPOSITORY
             OutlinedButton(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
@@ -88,13 +129,18 @@ fun UserRepositoryCard(
                     }
                 }
             ) {
-                Text(stringResource(R.string.user_open_browser))
+                Text(
+                    stringResource(R.string.user_open_browser)
+                )
             }
 
+            // SHARE REPOSITORY
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    val intent = Intent(Intent.ACTION_SEND).apply {
+                    val intent = Intent(
+                        Intent.ACTION_SEND
+                    ).apply {
                         type = "text/plain"
                         putExtra(
                             Intent.EXTRA_TEXT,
@@ -104,7 +150,10 @@ fun UserRepositoryCard(
 
                     try {
                         context.startActivity(
-                            Intent.createChooser(intent, shareTitle)
+                            Intent.createChooser(
+                                intent,
+                                shareTitle
+                            )
                         )
                     } catch (e: ActivityNotFoundException) {
                         Toast.makeText(
@@ -115,7 +164,11 @@ fun UserRepositoryCard(
                     }
                 }
             ) {
-                Text(stringResource(R.string.user_repository_share))
+                Text(
+                    stringResource(
+                        R.string.user_repository_share
+                    )
+                )
             }
         }
     }
