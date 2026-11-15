@@ -2,26 +2,24 @@ package com.pes.githubexplorer.favorites
 
 import android.content.Context
 import com.pes.githubexplorer.GitHubRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 /** Business logic for adding, removing and reading favorite repositories. */
 class FavoritesRepository(context: Context) {
-    private val storage = FavoritesStorage(context)
+    private val favoriteDao = FavoritesDatabase.getInstance(context).favoriteDao()
 
-    fun getFavorites(): List<GitHubRepository> = storage.getFavorites()
+    val favorites: Flow<List<GitHubRepository>> = favoriteDao.observeAll()
+        .map { favorites -> favorites.map(FavoriteEntity::toGitHubRepository) }
 
-    fun addFavorite(repository: GitHubRepository) {
-        val current = storage.getFavorites()
-        if (current.none { it.id == repository.id }) {
-            storage.saveFavorites(current + repository)
-        }
-    }
+    fun observeIsFavorite(repositoryId: Long): Flow<Boolean> =
+        favoriteDao.observeIsFavorite(repositoryId)
 
-    fun removeFavorite(repositoryId: Long) {
-        storage.saveFavorites(storage.getFavorites().filterNot { it.id == repositoryId })
-    }
+    suspend fun addFavorite(repository: GitHubRepository) =
+        favoriteDao.insert(FavoriteEntity.from(repository))
 
-    fun isFavorite(repositoryId: Long): Boolean =
-        storage.getFavorites().any { it.id == repositoryId }
+    suspend fun removeFavorite(repositoryId: Long) =
+        favoriteDao.deleteById(repositoryId)
 
-    fun clearFavorites() = storage.clearFavorites()
+    suspend fun clearFavorites() = favoriteDao.clearAll()
 }

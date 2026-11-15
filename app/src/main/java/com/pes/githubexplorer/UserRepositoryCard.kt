@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.pes.githubexplorer.favorites.FavoritesRepository
+import kotlinx.coroutines.launch
 
 @Composable
 fun UserRepositoryCard(
@@ -25,13 +26,11 @@ fun UserRepositoryCard(
     val favoritesRepository = remember {
         FavoritesRepository(context)
     }
+    val coroutineScope = rememberCoroutineScope()
 
-    // Check whether this repository is already saved
-    var isFavorite by remember(repository.id) {
-        mutableStateOf(
-            favoritesRepository.isFavorite(repository.id)
-        )
-    }
+    val isFavorite by favoritesRepository
+        .observeIsFavorite(repository.id)
+        .collectAsState(initial = false)
 
     val shareTitle = stringResource(
         R.string.user_repository_share_title
@@ -88,17 +87,17 @@ fun UserRepositoryCard(
             OutlinedButton(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    if (isFavorite) {
-                        favoritesRepository.removeFavorite(
-                            repository.id
-                        )
-                    } else {
-                        favoritesRepository.addFavorite(
-                            repository
-                        )
+                    coroutineScope.launch {
+                        if (isFavorite) {
+                            favoritesRepository.removeFavorite(
+                                repository.id
+                            )
+                        } else {
+                            favoritesRepository.addFavorite(
+                                repository
+                            )
+                        }
                     }
-
-                    isFavorite = !isFavorite
                 }
             ) {
                 Text(
