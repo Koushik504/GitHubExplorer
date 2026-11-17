@@ -44,6 +44,10 @@ class MainActivity : ComponentActivity() {
                 mutableStateOf<String?>(null)
             }
 
+            var selectedRepoFullName by rememberSaveable {
+                mutableStateOf<String?>(null)
+            }
+
             var selectedTab by rememberSaveable {
                 mutableStateOf("Search")
             }
@@ -56,10 +60,13 @@ class MainActivity : ComponentActivity() {
 
                 BackHandler(
                     enabled = selectedUsername != null ||
+                            selectedRepoFullName != null ||
                             selectedTab != "Search"
                 ) {
                     if (selectedUsername != null) {
                         selectedUsername = null
+                    } else if (selectedRepoFullName != null) {
+                        selectedRepoFullName = null
                     } else {
                         selectedTab = "Search"
                     }
@@ -69,7 +76,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
 
                     bottomBar = {
-                        if (selectedUsername == null) {
+                        if (selectedUsername == null &&
+                            selectedRepoFullName == null
+                        ) {
                             NavigationBar {
 
                                 NavigationBarItem(
@@ -79,6 +88,15 @@ class MainActivity : ComponentActivity() {
                                     },
                                     icon = { Text("⌕") },
                                     label = { Text("Search") }
+                                )
+
+                                NavigationBarItem(
+                                    selected = selectedTab == "Repos",
+                                    onClick = {
+                                        selectedTab = "Repos"
+                                    },
+                                    icon = { Text("⑂") },
+                                    label = { Text("Repos") }
                                 )
 
                                 NavigationBarItem(
@@ -117,9 +135,32 @@ class MainActivity : ComponentActivity() {
                             }
                         )
 
+                    } else if (selectedRepoFullName != null) {
+
+                        RepositoryDetailsScreen(
+                            fullName = selectedRepoFullName!!,
+                            modifier = contentModifier,
+                            onBack = {
+                                selectedRepoFullName = null
+                            },
+                            onOwnerClick = { owner ->
+                                selectedRepoFullName = null
+                                selectedUsername = owner
+                            }
+                        )
+
                     } else {
 
                         when (selectedTab) {
+
+                            "Repos" -> {
+                                RepositorySearchScreen(
+                                    modifier = contentModifier,
+                                    onRepositoryClick = { fullName ->
+                                        selectedRepoFullName = fullName
+                                    }
+                                )
+                            }
 
                             "Search" -> {
                                 UserSearchScreen(

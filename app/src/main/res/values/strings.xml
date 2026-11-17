@@ -35,4 +35,31 @@
     <string name="user_repository_share_title">Share repository link</string>
     <string name="user_repositories_load_more">Load More</string>
     <string name="user_no_app_available">No app available to open this link.</string>
+
+    <!-- Repository Search & Details -->
+    <string name="repo_search_title">Search Repositories</string>
+    <string name="repo_search_hint">Enter a repository name or keyword</string>
+    <string name="repo_search_intro">Search GitHub for repositories by name or topic.</string>
+    <string name="repo_search_empty">No repositories found. Try another keyword.</string>
+    <string name="repo_search_blank">Please enter a search term.</string>
+    <string name="repo_search_loading">Searching repositories…</string>
+    <string name="repo_search_count">%1$d repositories found</string>
+    <string name="repo_sort_best">Best match</string>
+    <string name="repo_sort_stars">Most stars</string>
+    <string name="repo_sort_forks">Most forks</string>
+    <string name="repo_sort_updated">Recently updated</string>
+
+    <string name="repo_details_title">Repository Details</string>
+    <string name="repo_details_loading">Loading repository…</string>
+    <string name="repo_details_topics">Topics: %1$s</string>
+    <string name="repo_details_language">Language: %1$s</string>
+    <string name="repo_details_watchers">Watchers: %1$d</string>
+    <string name="repo_details_issues">Open issues: %1$d</string>
+    <string name="repo_details_license">License: %1$s</string>
+    <string name="repo_details_no_license">Not specified</string>
+    <string name="repo_details_branch">Default branch: %1$s</string>
+    <string name="repo_details_updated">Last updated: %1$s</string>
+    <string name="repo_add_favorite">♡ Add to Favorites</string>
+    <string name="repo_remove_favorite">♥ Remove from Favorites</string>
+    <string name="repo_view_owner">View Owner Profile</string>
 </resources>
