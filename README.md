@@ -89,4 +89,5 @@ GitHub may temporarily limit API requests. When this happens, the app displays a
 
 ## Submission Materials
 
-The demonstration video is uploaded to this repository. The PDF report will contain team details, the project description and application screenshots.
+- [App demonstration video](Demo.mp4)
+- [Project report with team details and screenshots](GitHubExplorer_Project_Report.pdf)
